@@ -1,0 +1,53 @@
+<!-- app/views/posts/show.html.erb -->
+<div class="row">
+  <div class="col-12 col-md-8 offset-md-2">
+    <h1><%= @post.title %></h1>
+    <p><%= @post.content %></p>
+    <p class="text-muted">
+      Postado em <%= @post.created_at.strftime("%d/%m/%Y %H:%M") %> 
+      por <%= @post.user.email if @post.user %>
+    </p>
+
+    <!-- Links de editar/apagar (somente se for o dono ou se tiver permissão) -->
+    <% if @post.user == current_user %>
+      <%= link_to "Editar", edit_post_path(@post), class: "btn btn-sm btn-warning" %>
+      <%= link_to "Apagar", post_path(@post), 
+                  method: :delete, 
+                  data: { confirm: "Tem certeza?" },
+                  class: "btn btn-sm btn-danger" %>
+    <% end %>
+
+    <hr />
+
+    <!-- Lista de comentários -->
+    <h4>Comentários (<%= @post.comments.count %>)</h4>
+    <div class="mb-4">
+      <% @post.comments.each do |comment| %>
+        <div class="border p-2 mb-2">
+          <strong>
+            <%= comment.user ? comment.user.email : "Anônimo" %>
+          </strong>:
+          <%= comment.content %>
+          
+          <!-- Exemplo de permitir remover comentário se for do autor ou do post -->
+          <% if comment.user == current_user || @post.user == current_user %>
+            <%= link_to "Remover", post_comment_path(@post, comment),
+                        method: :delete,
+                        data: { confirm: "Deseja apagar este comentário?" },
+                        class: "btn btn-sm btn-outline-danger float-end" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Form para criar comentário -->
+    <!-- Se estiver logado ou não, iremos tratar no CommentsController -->
+    <%= form_with(model: [@post, @comment], local: true, class: "mb-3") do |form| %>
+      <div class="mb-3">
+        <%= form.label :content, "Adicionar um comentário" %>
+        <%= form.text_area :content, rows: 3, class: "form-control" %>
+      </div>
+      <%= form.submit "Comentar", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
