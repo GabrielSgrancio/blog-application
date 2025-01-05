@@ -1,0 +1,14 @@
+<!-- app/views/posts/_form.html.erb -->
+<%= form_with(model: @post, local: true) do |form| %>
+  <div class="mb-3">
+    <%= form.label :title %>
+    <%= form.text_field :title, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :content, "Conteúdo" %>
+    <%= form.text_area :content, rows: 5, class: "form-control" %>
+  </div>
+
+  <%= form.submit class: "btn btn-success" %>
+<% end %>
