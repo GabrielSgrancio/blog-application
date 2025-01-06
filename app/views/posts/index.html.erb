@@ -1,22 +1,31 @@
-<!-- app/views/posts/index.html.erb -->
-<div class="row">
-  <div class="col-12">
-    <h1>Posts Recentes</h1>
+<div class="mb-3">
+  <%= form_with url: search_by_tag_posts_path, method: :get, local: true do %>
+    <div class="input-group">
+      <%= text_field_tag :tag, params[:tag], class: "form-control", placeholder: "Pesquisar por tag" %>
+      <button class="btn btn-outline-primary" type="submit">Buscar</button>
+    </div>
+  <% end %>
+</div>
 
-    <!-- Loop pelos posts -->
-    <% @posts.each do |post| %>
-      <div class="card mb-3">
-        <div class="card-body">
-          <h4><%= link_to post.title, post_path(post) %></h4>
-          <p class="text-muted">
-            Publicado em <%= post.created_at.strftime("%d/%m/%Y %H:%M") %>
-            por <%= post.user.username if post.user %>
-          </p>
+
+
+<% @posts.each do |post| %>
+  <div class="card mb-3">
+    <div class="card-body">
+      <h4><%= link_to post.title, post_path(post) %></h4>
+      <p><%= post.content.truncate(100) %></p>
+
+      <!-- Exibir tags como "pequenas boxes" (badges do Bootstrap) -->
+        <div>
+          <% post.tags.each do |tag| %>
+            <span class="badge bg-info text-dark">
+              <!-- Link para filtrar por esta tag -->
+              <%= link_to tag.name, search_by_tag_posts_path(tag: tag.name), class: "text-dark" %>
+            </span>
+          <% end %>
         </div>
       </div>
-    <% end %>
+    </div>
+  <% end %>
 
-    <!-- Paginação -->
-    <%= paginate @posts %>
-  </div>
-</div>
+<%= paginate @posts %>

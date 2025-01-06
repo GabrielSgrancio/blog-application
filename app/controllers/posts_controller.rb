@@ -1,54 +1,52 @@
 class PostsController < ApplicationController
-  # Se quiser exigir login para criar/editar/excluir posts:
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
 
   def index
-    # Pegar todos os posts, ordenados do mais novo para o mais antigo
-    # e paginar a cada 3 posts (usando uma gem de paginação)
-    @posts = Post.order(created_at: :desc).page(params[:page]).per(3)
+    @posts = Post.order(created_at: :desc).includes(:tags).page(params[:page]).per(3)
 
+    if params[:tag].present?
+      tag = Tag.find_by(name: params[:tag])
+      @posts = tag ? tag.posts.order(created_at: :desc) : Post.none
+    end
   end
 
   def show
-    @post = Post.find(params[:id])
+    @comments = @post.comments.order(created_at: :desc)
     @comment = Comment.new
   end
 
   def new
-    @post = current_user.posts.build
+    @post = Post.new
   end
 
   def create
     @post = current_user.posts.build(post_params)
+
     if @post.save
+      if params[:post][:tag_names].present?
+        @post.tags = params[:post][:tag_names].split(",").map do |tag_name|
+          Tag.where(name: tag_name.strip).first_or_create!
+        end
+      end
       redirect_to @post, notice: "Post criado com sucesso."
     else
       render :new, status: :unprocessable_entity
     end
   end
 
-  def edit
-    @post = current_user.posts.find(params[:id])
-  end
-
-  def update
-    @post = current_user.posts.find(params[:id])
-    if @post.update(post_params)
-      redirect_to @post, notice: "Post atualizado."
-    else
-      render :edit, status: :unprocessable_entity
-    end
-  end
-
-  def destroy
-    @post = current_user.posts.find(params[:id])
-    @post.destroy
-    redirect_to posts_path, notice: "Post removido."
+  def search_by_tag
+    @posts = Post.joins(:tags).where(tags: { name: params[:tag] }).order(created_at: :desc).page(params[:page]).per(3)
+    render :index
   end
 
   private
 
+  def set_post
+    @post = Post.find(params[:id])
+  end
+
   def post_params
-    params.require(:post).permit(:title, :content)
+    params.require(:post).permit(:title, :content, :tag_names)
   end
 end
