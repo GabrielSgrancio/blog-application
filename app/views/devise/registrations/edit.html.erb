@@ -1,36 +1,26 @@
-<h2>Editar Usuário</h2>
+<h2>Editar conta</h2>
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-6 offset-md-3">
-      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-        <div class="mb-3">
-          <%= f.label :username %>
-          <%= f.text_field :username, class: "form-control" %>
-        </div>
-
-        <div class="mb-3">
-          <%= f.label :email %>
-          <%= f.email_field :email, class: "form-control", autofocus: true %>
-        </div>
-
-        <!-- Outras informações, como trocar senha, etc. -->
-        <hr>
-        <div class="mb-3">
-          <%= f.label :password %>
-          <%= f.password_field :password, class: "form-control", autocomplete: "new-password" %>
-          <p>(deixe em branco se não quiser mudar a senha)</p>
-        </div>
-
-        <div class="mb-3">
-          <%= f.label :password_confirmation %>
-          <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password" %>
-        </div>
-
-        <div class="actions">
-          <%= f.submit "Atualizar", class: "btn btn-primary" %>
-        </div>
-      <% end %>
-    </div>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <div class="mb-3">
+    <%= f.label :username %>
+    <%= f.text_field :username, class: "form-control" %>
   </div>
-</div>
+
+  <div class="mb-3">
+    <%= f.label :email %>
+    <%= f.email_field :email, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :password %>
+    <%= f.password_field :password, class: "form-control", autocomplete: "new-password" %>
+    <small>(deixe em branco se não quiser alterar a senha)</small>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :password_confirmation, "Confirmar senha" %>
+    <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password" %>
+  </div>
+
+  <%= f.submit "Atualizar", class: "btn btn-primary" %>
+<% end %>
