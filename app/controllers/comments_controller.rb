@@ -18,11 +18,11 @@ class CommentsController < ApplicationController
       @post = Post.find(params[:post_id])
       @comment = @post.comments.find(params[:id])
 
-      # Regras de permissão: se quiser que apenas quem comentou possa apagar, verifique:
-      # if @comment.user == current_user
-      #   @comment.destroy
-      # end
-      # ou permita que o dono do post também apague, se quiser.
+     
+      if @comment.user == current_user
+         @comment.destroy
+         end
+
 
       @comment.destroy
       redirect_to @post, notice: "Comentário removido."
@@ -33,4 +33,9 @@ class CommentsController < ApplicationController
     def comment_params
       params.require(:comment).permit(:content)
     end
+
+      def show
+    @comments = @post.comments.order(created_at: :desc)
+    @comment = Comment.new
+  end
 end
