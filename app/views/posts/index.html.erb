@@ -10,7 +10,7 @@
           <h4><%= link_to post.title, post_path(post) %></h4>
           <p class="text-muted">
             Publicado em <%= post.created_at.strftime("%d/%m/%Y %H:%M") %>
-            por <%= post.user.email if post.user %>
+            por <%= post.user.username if post.user %>
           </p>
         </div>
       </div>
