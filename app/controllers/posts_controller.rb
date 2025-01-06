@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  before_action :set_post, only: [ :show, :edit, :update, :destroy ]
+  before_action :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy ]
 
   def index
     @posts = Post.order(created_at: :desc).includes(:tags).page(params[:page]).per(3)
@@ -29,7 +29,7 @@ class PostsController < ApplicationController
           Tag.where(name: tag_name.strip).first_or_create!
         end
       end
-      redirect_to @post, notice: "Post criado com sucesso."
+      redirect_to @post, notice: t("blog.post_created")
     else
       render :new, status: :unprocessable_entity
     end

@@ -28,4 +28,20 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  blog:
+    title: "My Blog"
+    new_post: "New Post"
+    edit_post: "Edit Post"
+    destroy_post: "Delete"
+    post_created: "Post was successfully created."
+    post_updated: "Post was successfully updated."
+    post_deleted: "Post was successfully deleted."
+
+  devise:
+    registrations:
+      new:
+        sign_up: "Sign up"
+      edit:
+        update: "Update"
+
+  # E assim por diante...

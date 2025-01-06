@@ -1,0 +1,16 @@
+pt-BR:
+  blog:
+    title: "Meu Blog"
+    new_post: "Novo Post"
+    edit_post: "Editar Post"
+    destroy_post: "Apagar"
+    post_created: "Post criado com sucesso."
+    post_updated: "Post atualizado com sucesso."
+    post_deleted: "Post apagado com sucesso."
+
+  devise:
+    registrations:
+      new:
+        sign_up: "Cadastrar"
+      edit:
+        update: "Atualizar"
