@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
 
     <!-- Se quiser seu próprio CSS -->
-    <%= stylesheet_link_tag "application", media: "all" %>
-    <%= javascript_include_tag "application" %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
@@ -28,9 +28,10 @@
                 <%= link_to "Editar Perfil", edit_user_registration_path, class: "nav-link" %>
               </li>
               <li class="nav-item">
-              <%= link_to "Logout", destroy_user_session_path,
-              data: { turbo: "false" },
-              method: :delete %>
+              <%= button_to "Logout", destroy_user_session_path,
+                method: :delete,
+                data: { turbo: "false", confirm: "Deseja realmente sair?" },
+               class: "nav-link" %>
               </li>
             <% else %>
               <li class="nav-item">
